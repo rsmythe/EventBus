@@ -1,0 +1,126 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    "align": [
+      true,
+      "statements"
+    ],
+    "array-type": false,
+    "arrow-parens": false,
+    "arrow-return-shorthand": [
+      false
+    ],
+    "ban":  [true, ["KnockoutUtils", "arrayMap", "use .map() instead"]
+    , ["KnockoutUtils", "arrayFilter", "use .filter() instead"]],
+    "comment-format": [
+      false,
+      "check-space"
+    ],
+    "eofline": false,
+    "interface-name": [
+      false
+    ],
+    "max-classes-per-file": [
+      false
+    ],
+    "max-line-length": [
+      false,
+      140
+    ],
+    "member-access": true,
+    "member-ordering": [
+      true,
+      "public-before-private",
+      "static-before-instance",
+      "variables-before-functions"
+    ],
+    "no-angle-bracket-type-assertion": false,
+    "no-consecutive-blank-lines": false,
+    "no-debugger": true,
+    "no-duplicate-variable": true,
+    "no-for-in-array": true,
+    "no-internal-module": true,
+    "no-namespace": false,
+    "no-reference": false,
+    "no-require-imports": true,
+    "no-switch-case-fall-through": true,
+    "no-trailing-whitespace": false,
+    "object-literal-key-quotes": [
+      true,
+      "consistent-as-needed"
+    ],
+    "object-literal-shorthand": false,
+    "object-literal-sort-keys": false,
+    "one-line": {
+      "options": [
+        "check-whitespace"
+      ]
+    },
+    "only-arrow-functions": false,
+    "prefer-const": false,
+    "quotemark": [
+      true,
+      "single",
+      "avoid-escape"
+    ],
+    "space-before-function-paren": [
+      true,
+      {
+        "anonymous": "always",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
+    "switch-default": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "never",
+        "singleline": "never"
+      }
+    ],
+    "typedef": [
+      true,
+      "call-signature",
+      "parameter",
+      "property-declaration",
+      "variable-declaration",
+      "member-variable-declaration"
+    ],
+    "typedef-whitespace": [
+      true,
+      {
+        "call-signature": "nospace",
+        "index-signature": "nospace",
+        "parameter": "nospace",
+        "property-declaration": "nospace",
+        "variable-declaration": "nospace"
+      }
+    ],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case",
+      "allow-snake-case",
+      "allow-leading-underscore"
+    ],
+    "whitespace": [
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-separator",
+      "check-type"
+    ],
+    "ban-types": [
+      false,
+      [
+        "Object",
+        "Use {} instead."
+      ],
+      [
+        "String"
+      ]
+    ]
+  }
+}
