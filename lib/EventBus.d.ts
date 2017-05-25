@@ -8,23 +8,26 @@ declare namespace EventBusTS {
         static listeners: {
             [key: string]: EventListener<any, EventBase>[];
         };
-        static addEventListener<TDispatcher, TListenerScope, TEvent extends EventBase>(event: TEvent, callback: (event: TEvent) => void, scope: TListenerScope): void;
+        static addEventListener<TEvent extends EventBase, TListenerScope>(event: IEventConstructor, callback: (event: TEvent) => void, scope: TListenerScope): void;
         static dispatch<TEvent extends EventBase>(event: TEvent): void;
+        private static hash(str);
+    }
+    interface IEventConstructor {
+        new (...args: any[]): EventBase;
     }
     abstract class EventBase {
         Dispatch(): void;
-        readonly abstract Type: string;
     }
 }
 declare namespace EventBusTS {
     interface IHandlerConstructor<T> extends Function {
         __handlers__?: {
             [prop: string]: {
-                Event: EventBase;
+                Event: IEventConstructor;
             };
         };
         new (...args: any[]): T;
     }
-    function Handles(event: EventBase): MethodDecorator;
+    function Handles(event: IEventConstructor): MethodDecorator;
     function StateObserver<T>(target: IHandlerConstructor<T>): any;
 }
