@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "ES6",
+        "target": "ES5",
         "out": "./lib/EventBus.js",
         "rootDir": "./src",
         "experimentalDecorators": true,

@@ -4,12 +4,12 @@ namespace EventBusTS
     export interface IHandlerConstructor<T> extends Function
     {
         __handlers__?: {
-            [prop: string]: { Event: new(...args: any[]) =>  EventBase }
+            [prop: string]: { Event: EventBase }
         };
         new (...args: any[]): T;
     }
 
-    export function Handles(event: new(...args: any[]) =>  EventBase): MethodDecorator
+    export function Handles(event: EventBase): MethodDecorator
     {
         let f: MethodDecorator = function (target: any, propertyKey: string, descriptor: TypedPropertyDescriptor<any>): any
         {
@@ -36,7 +36,7 @@ namespace EventBusTS
                 {
                     if (original.__handlers__.hasOwnProperty(prop))
                     {
-                        let event: new(...args: any[]) =>  EventBase = original.__handlers__[prop].Event;
+                        let event: EventBase = original.__handlers__[prop].Event;
                         let callback: (evt: EventBusTS.EventBase) => void = (evt: EventBusTS.EventBase) => 
                             {
                                 let fn: (evt: EventBusTS.EventBase) => void = obj[prop].bind(obj);
