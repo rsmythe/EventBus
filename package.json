@@ -1,13 +1,15 @@
 {
-  "name": "eventbusjs",
+  "name": "eventbusts",
   "version": "0.2.0",
-  "description": "Managing events with JavaScript",
-  "main": "lib/eventbus.min.js",
+  "description": "Managing events with TypeScript",
+  "main": "lib/eventbus.js",
   "directories": {
     "example": "example"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "minify": "uglifyjs ./lib/EventBus.js -o ./lib/eventbus.min.js",
+    "test": "mocha -r ts-node/register test/test.ts"
   },
   "repository": {
     "type": "git",
@@ -26,6 +28,12 @@
   },
   "homepage": "https://github.com/rsmythe/EventBus",
   "devDependencies": {
-    "uglify-js": "^2.6.2"
+    "@types/chai": "^3.5.2",
+    "@types/mocha": "^2.2.41",
+    "chai": "^3.5.0",
+    "mocha": "^3.4.2",
+    "ts-node": "^3.0.4",
+    "typescript": "^2.3.3",
+    "uglify-js": "^2.8.27"
   }
 }

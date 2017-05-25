@@ -12,20 +12,20 @@ namespace EventBusTS
     {
         public static listeners: { [key: string]: EventListener<any, EventBase>[] } = {};
 
-        public static addEventListener<TDispatcher, TListenerScope, TEvent extends EventBase>(event: TEvent, callback: (event: TEvent) => void, scope: TListenerScope): void
+        public static addEventListener<TEvent extends EventBase, TListenerScope>(event: IEventConstructor, callback: (event: TEvent) => void, scope: TListenerScope): void
         {
-            let typeName: string = event.Type;
+            let typeHash: string = this.hash(event.toString());
             let listener: EventListener<TListenerScope, TEvent> = new EventListener(scope, callback);
 
-            this.listeners.hasOwnProperty(typeName) ? this.listeners[typeName].push(listener) : this.listeners[typeName] = [listener];
+            this.listeners.hasOwnProperty(typeHash) ? this.listeners[typeHash].push(listener) : this.listeners[typeHash] = [listener];
         }
 
         public static dispatch<TEvent extends EventBase>(event: TEvent): void
         {
-            let type: string = event.Type;
-            if(this.listeners.hasOwnProperty(type) )
+            let typeHash: string = event.constructor.toString();
+            if(this.listeners.hasOwnProperty(typeHash) )
             {
-                let listeners: EventListener<any, TEvent>[] = this.listeners[type];
+                let listeners: EventListener<any, TEvent>[] = this.listeners[typeHash];
                 listeners.forEach((listener) =>
                 {
                     if(listener && listener.callback) 
@@ -35,6 +35,28 @@ namespace EventBusTS
                 });
             }
         }
+
+        private static hash(str: string): string
+        {
+            let hash: number = 5381;
+            let i: number = str.length;
+
+            while(i) {
+                hash = (hash * 33) ^ str.charCodeAt(--i);
+            }
+
+            /* JavaScript does bitwise operations (like XOR, above) on 32-bit signed
+            * integers. Since we want the results to be always positive, convert the
+            * signed int to an unsigned by doing an unsigned bitshift. */
+            let hashed: number = hash >>> 0;
+
+            return hashed.toString(16);
+        }
+    }
+
+    export interface IEventConstructor
+    {
+        new (...args: any[]): EventBase;
     }
 
     export abstract class EventBase
@@ -43,7 +65,5 @@ namespace EventBusTS
         {
             EventBus.dispatch(this);
         }
-
-        public abstract get Type(): string;
     }
 }
