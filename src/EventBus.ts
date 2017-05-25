@@ -14,7 +14,6 @@ namespace EventBusTS
 
         public static addEventListener<TDispatcher, TListenerScope, TEvent extends EventBase>(type: new () => TEvent, callback: (event: TEvent) => void, scope: TListenerScope): void
         {
-            type.prototype.toString();
             let typeName: string = type.name;
             let listener: EventListener<TListenerScope, TEvent> = new EventListener(scope, callback);
 
