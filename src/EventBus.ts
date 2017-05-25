@@ -22,7 +22,7 @@ namespace EventBusTS
 
         public static dispatch<TEvent extends EventBase>(event: TEvent): void
         {
-            let typeHash: string = event.constructor.toString();
+            let typeHash: string = this.hash(event.constructor.toString());
             if(this.listeners.hasOwnProperty(typeHash) )
             {
                 let listeners: EventListener<any, TEvent>[] = this.listeners[typeHash];

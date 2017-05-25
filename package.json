@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "minify": "uglifyjs ./lib/EventBus.js -o ./lib/eventbus.min.js",
+    "min": "uglifyjs ./lib/EventBus.js -o ./lib/eventbus.min.js",
     "test": "mocha -r ts-node/register test/test.ts"
   },
   "repository": {
