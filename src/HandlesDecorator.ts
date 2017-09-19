@@ -30,7 +30,7 @@ namespace EventBusTS
             //Construct the object
             let obj: T = new original(...args);
 
-            if (original.hasOwnProperty('__handlers__'))
+            if (original.__handlers__)
             {
                 for (let prop in original.__handlers__)
                 {
