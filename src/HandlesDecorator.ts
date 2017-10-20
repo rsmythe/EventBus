@@ -22,37 +22,37 @@ namespace EventBusTS
 
     export function StateObserver<T>(target: IHandlerConstructor<T>): any
     {
-        let original: IHandlerConstructor<T> = target;
+        let originalConstructor: IHandlerConstructor<T> = target;
 
         //Create a new function to replace the constructor
-        let f: Function = function (...args: any[]): T
+        let newConstructor: Function = function (...args: any[]): T
         {
             //Construct the object
-            let obj: T = new original(...args);
+            let constructedObject: T = new originalConstructor(...args);
 
-            if (original.__handlers__)
+            if (originalConstructor.__handlers__)
             {
-                for (let prop in original.__handlers__)
+                for (let prop in originalConstructor.__handlers__)
                 {
-                    if (original.__handlers__.hasOwnProperty(prop))
+                    if (constructedObject[prop])
                     {
-                        let eventHandler: (evt: EventBusTS.EventBase) => void = obj[prop];
-                        eventHandler.bind(obj);
+                        let eventHandler: (evt: EventBusTS.EventBase) => void = (<{ [prop: string]: (evt: EventBusTS.EventBase) => void }><any>constructedObject )[prop];
+                        eventHandler.bind(constructedObject);
 
-                        let event: IEventConstructor = original.__handlers__[prop].Event;
+                        let event: IEventConstructor = originalConstructor.__handlers__[prop].Event;
  
-                        EventBus.addEventListener(event, eventHandler, obj);
+                        EventBus.addEventListener(event, eventHandler, constructedObject);
                     }
                 }
             }
-            return obj;
+            return constructedObject;
         };
 
         //Copy the original constructor's prototype onto our new function
-        f.prototype = original.prototype;
+        newConstructor.prototype = originalConstructor.prototype;
 
         //return the new function as the object constructor
-        return f;
+        return newConstructor;
     }
     /* tslint:enable:no-unused-variable */
 }
