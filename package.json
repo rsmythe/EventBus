@@ -1,6 +1,6 @@
 {
-  "name": "eventbusts",
-  "version": "0.2.0",
+  "name": "eventbus-ts",
+  "version": "0.3.0",
   "description": "Managing events with TypeScript",
   "main": "lib/eventbus.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "dispatch",
     "listen"
   ],
-  "author": "Krasimir Tsonev, Ryan Smythe   ",
+  "author": "Ryan Smythe   ",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/rsmythe/EventBus/issues"
