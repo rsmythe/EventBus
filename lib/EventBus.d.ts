@@ -1,16 +1,15 @@
 declare namespace EventBusTS {
-    class EventListener<TListener, TEvent extends EventBase> {
-        scope: TListener;
-        callback: (event: TEvent) => void;
-        constructor(scope: TListener, callback: (event: TEvent) => void);
+    class EventHandler<TTarget, TEvent extends EventBase> {
+        target: TTarget;
+        handler: (event: TEvent) => void;
+        constructor(target: TTarget, handler: (event: TEvent) => void);
     }
     class EventBus {
-        static listeners: {
-            [key: string]: EventListener<any, EventBase>[];
-        };
-        static addEventListener<TEvent extends EventBase, TListenerScope>(event: IEventConstructor, callback: (event: TEvent) => void, scope: TListenerScope): void;
+        private static eventRegistry;
+        static register<TEvent extends EventBase, TTarget>(eventType: IEventConstructor, handler: (evt: TEvent) => void, target: TTarget): void;
+        static unregister<TTarget>(eventType: IEventConstructor, target: TTarget): void;
         static dispatch<TEvent extends EventBase>(event: TEvent): void;
-        private static hash(str);
+        private static getEventName(eventType);
     }
     interface IEventConstructor {
         new (...args: any[]): EventBase;
@@ -22,9 +21,7 @@ declare namespace EventBusTS {
 declare namespace EventBusTS {
     interface IHandlerConstructor<T> extends Function {
         __handlers__?: {
-            [prop: string]: {
-                Event: IEventConstructor;
-            };
+            [prop: string]: IEventConstructor;
         };
         new (...args: any[]): T;
     }
