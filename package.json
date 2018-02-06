@@ -1,6 +1,6 @@
 {
-  "name": "eventbusts",
-  "version": "0.2.0",
+  "name": "eventbus-ts",
+  "version": "0.3.0",
   "description": "Managing events with TypeScript",
   "main": "lib/eventbus.js",
   "scripts": {

@@ -1,1 +1,3 @@
-# Simple TypeScript decorator for managing events in JavaScript
+# EventBus
+
+Simple TypeScript decorator to simplify event management
