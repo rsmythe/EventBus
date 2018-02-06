@@ -69,6 +69,6 @@ namespace EventBusTS
 
         //return the new function as the object constructor
         return newConstructor;
-    }    
+    }
 }
 /* tslint:enable:no-unused-variable */

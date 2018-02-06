@@ -1,13 +1,13 @@
 namespace EventBusTS
 {
-    // EventSubscription
+    // EventHandler
     // An object/method pair that takes in a specific event type
     //  Used to ensure the method is performed on the correct scope ('this')
     //
     // TTarget: The type of object that is listening
     // TEvent: The type of event to listen for
     //
-    export class EventSubscription<TTarget, TEvent extends EventBase>
+    export class EventHandler<TTarget, TEvent extends EventBase>
     {
         // target: An instantiated object that is handling this type of event
         // handler: The method that will handle the event
@@ -21,9 +21,9 @@ namespace EventBusTS
         // eventRegistry
         //
         // eventRegistry: Contains a property for each event type that can be handled
-        //  Each event type has a list of EventSubscriptions subscribed to it
+        //  Each event type has a list of EventHandlers subscribed to it
         //
-        private static eventRegistry: { [key: string]: EventSubscription<any, EventBase>[] } = {};
+        private static eventRegistry: { [key: string]: EventHandler<any, EventBase>[] } = {};
 
         // register
         //
@@ -40,14 +40,14 @@ namespace EventBusTS
         public static register<TEvent extends EventBase, TTarget>(eventType: IEventConstructor, handler: (evt: TEvent) => void, target: TTarget): void
         {
             let eventTypeName: string = this.getEventName(eventType);
-            let listener: EventSubscription<TTarget, TEvent> = new EventSubscription(target, handler);
+            let handlerRegistration: EventHandler<TTarget, TEvent> = new EventHandler(target, handler);
 
-            this.eventRegistry.hasOwnProperty(eventTypeName) ? this.eventRegistry[eventTypeName].push(listener) : this.eventRegistry[eventTypeName] = [listener];
+            this.eventRegistry.hasOwnProperty(eventTypeName) ? this.eventRegistry[eventTypeName].push(handlerRegistration) : this.eventRegistry[eventTypeName] = [handlerRegistration];
         }
 
         // unregister
         //
-        // Removes any EventSubscriptions for 'eventType' registered by 'target'
+        // Removes any EventHandlers for 'eventType' registered by 'target'
         //
         // eventType: Event type 
         // target: The object that is no longer handling this type of event
@@ -57,7 +57,7 @@ namespace EventBusTS
             let eventTypeName: string = this.getEventName(eventType);
             if(this.eventRegistry.hasOwnProperty(eventTypeName) )
             {
-                let eventRegistration: EventSubscription<any, EventBase>[] = this.eventRegistry[eventTypeName];
+                let eventRegistration: EventHandler<any, EventBase>[] = this.eventRegistry[eventTypeName];
                 eventRegistration
                     .filter(l => l.target !== target)
                     .forEach((listener, idx) =>
@@ -82,7 +82,7 @@ namespace EventBusTS
             let eventType: string = this.getEventName(eventConstructor);
             if(this.eventRegistry.hasOwnProperty(eventType) )
             {
-                let listeners: EventSubscription<any, TEvent>[] = this.eventRegistry[eventType];
+                let listeners: EventHandler<any, TEvent>[] = this.eventRegistry[eventType];
                 listeners.forEach((listener) =>
                 {
                     if(listener && listener.handler) 
