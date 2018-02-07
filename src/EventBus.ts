@@ -48,22 +48,35 @@ namespace EventBusTS
         // unregister
         //
         // Removes any EventHandlers for 'eventType' registered by 'target'
+        //  Objects need to unregister before they are deleted or they could create a memory leak
         //
         // eventType: Event type 
         // target: The object that is no longer handling this type of event
         //
-        public static unregister<TTarget>(eventType: IEventConstructor, target: TTarget): void
+        public static unregister<TTarget>(target: TTarget, eventType?: IEventConstructor): void
         {
-            let eventTypeName: string = this.getEventName(eventType);
-            if(this.eventRegistry.hasOwnProperty(eventTypeName) )
+            let eventNames: string[];
+            if(arguments.length > 1 && typeof eventType === 'function')
             {
-                let eventRegistration: EventHandler<any, EventBase>[] = this.eventRegistry[eventTypeName];
-                eventRegistration
-                    .filter(l => l.target !== target)
-                    .forEach((listener, idx) =>
-                    {
-                        eventRegistration.splice(eventRegistration.indexOf(listener), 1);
-                    });
+                eventNames = [this.getEventName(eventType)];
+            }
+            else
+            {
+                eventNames = Object.keys(this.eventRegistry);
+            }
+
+            for(let eventTypeName of eventNames)
+            {   
+                if(this.eventRegistry.hasOwnProperty(eventTypeName) )
+                {
+                    let eventRegistration: EventHandler<any, EventBase>[] = this.eventRegistry[eventTypeName];
+                    eventRegistration
+                        .filter(l => l.target === target)
+                        .forEach((listener, idx) =>
+                        {
+                            eventRegistration.splice(eventRegistration.indexOf(listener), 1);
+                        });
+                }
             }
         }
 
